@@ -1,2 +1,3 @@
-# club_admin_app
-Admin app for CLUB
+# club_admin
+
+A new Flutter project.

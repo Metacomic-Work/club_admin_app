@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1082350793346-2k9ve0s0co39fdh9t02amgf3b8k007jl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1082350793346-2k9ve0s0co39fdh9t02amgf3b8k007jl</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1082350793346-j6k8k71k21u5gpt4299sfukdk4hg7r98.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD5tZm5wTSpLSWRLqwtfiih1osfURUx49g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1082350793346</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.clubAdmin</string>
+	<key>PROJECT_ID</key>
+	<string>club-f0ffa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>club-f0ffa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1082350793346:ios:f790ae5b7332e4d3b03a9b</string>
+	<key>DATABASE_URL</key>
+	<string>https://club-f0ffa-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
