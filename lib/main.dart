@@ -1,3 +1,4 @@
+import 'package:club_admin/views/authorised/addMenu.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData.light(useMaterial3: true),
       home: Scaffold(
         body: Center(
-          child: RegisterResto(),
+          child: AddMenu(),
         ),
       ),
     );
