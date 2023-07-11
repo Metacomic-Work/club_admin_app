@@ -19,7 +19,7 @@ class RegisterResto extends StatefulWidget {
 
   @override
   State<RegisterResto> createState() => _RegisterRestoState();
-}
+} 
 
 class _RegisterRestoState extends State<RegisterResto> {
   @override
