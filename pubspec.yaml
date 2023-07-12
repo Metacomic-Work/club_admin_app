@@ -17,7 +17,10 @@ dependencies:
   get: ^4.6.5
   image_picker: ^1.0.0
   flashy_tab_bar2: ^0.0.5
-  flutter_form_builder: ^9.0.0
+  google_fonts: ^5.1.0
+  pinput: ^2.2.31
+  firebase_storage: ^11.2.4
+  
 
 dev_dependencies:
   flutter_test:

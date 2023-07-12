@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:club_admin/models/restaurantModel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 class RestaurantController extends GetxController{
 
   Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
-
-  void ResgisterRestaurant() async{
-    final restoId = FirebaseFirestore.instance.collection('Restaurants').doc();
+  var uid;
+  void registerRestaurant() async{
+    final restoId = FirebaseFirestore.instance
+    .collection('RestaurantOwners')
+    .doc(uid)
+    .collection("Restaurants")
+    .doc();
 
     try{
       await restoId.set({
@@ -30,8 +37,14 @@ class RestaurantController extends GetxController{
 
 
 
-  void RegisterRestaurantDetails()async {
-    final restoDetailId = FirebaseFirestore.instance.collection('RestaurantDetails').doc();
+  void registerRestaurantDetails()async {
+    final restoDetailId = FirebaseFirestore.instance
+    .collection('RestaurantOwners')
+    .doc(uid)
+    .collection("RestaurantDetails")
+    .doc();
+
+
     try{
       await restoDetailId.set({
         "uid": restaurantModel.value.uid,
@@ -57,5 +70,23 @@ class RestaurantController extends GetxController{
     }
   }
  
+  Future<String> uploadRestaurantImage(file) async {
+    String url = '';
+    String uniqueName = DateTime.now().microsecondsSinceEpoch.toString();
+    final ref = FirebaseStorage.instance
+        .ref().
+        child('Restaurant_images')
+        .child(uniqueName);
+
+    try{
+      await ref.putFile(File(file));
+      url = await ref.getDownloadURL();
+    }catch(e){
+      print("Cannot Upload Image or Get link");
+      print(e);
+    }
+    return url; 
+  }
+  
 
 }

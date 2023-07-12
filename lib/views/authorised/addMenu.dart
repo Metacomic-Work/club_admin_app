@@ -71,7 +71,7 @@ class _AddMenuState extends State<AddMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       FormBuilderTextField(
-                        name: 'Item Name',
+                        name: 'Item_Name',
                         keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                           labelText: 'Restaurant Name',
@@ -80,7 +80,7 @@ class _AddMenuState extends State<AddMenu> {
                       ),
                       const SizedBox(height: 20,),
                       FormBuilderTextField(
-                        name: 'Item Price',
+                        name: 'Item_Price',
                         keyboardType: TextInputType.number,
                         decoration:const InputDecoration(
                           labelText: 'Item Price',
@@ -90,7 +90,7 @@ class _AddMenuState extends State<AddMenu> {
                       const SizedBox(height: 20,),
                       FormBuilderTextField(
                         maxLines: 3,
-                        name: 'Item Description',
+                        name: 'Item_Description',
                         keyboardType: TextInputType.name,
                         decoration:const InputDecoration(
                           labelText: 'Description',
@@ -99,14 +99,21 @@ class _AddMenuState extends State<AddMenu> {
                       ),
                       const SizedBox(height: 20,),
                       FormBuilderDropdown(
-                        name: "Item Type",
+                        name: "Item_Type",
                         decoration:const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Item Type'
                         ),
                         items: MenuConstants.ItemType
                       ),
-                      
+                      FormBuilderTextField(
+                        name: 'servings ',
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(
+                          labelText: 'Restaurant Name',
+                          border: OutlineInputBorder(),
+                        ), 
+                      ),
                     ],
                   ),
                 )
