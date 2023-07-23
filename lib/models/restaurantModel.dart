@@ -12,12 +12,13 @@ class RestaurantModel{
     String? restaurantName;
     String? phone;
     String? email;
-    File? logo;
+    String? imagePath;
+    String? restaurantImage;
     String? startTime;
     String? endTime;
     String? area;
     String? landmark;
-    int? pincode;
+    String? pincode;
     String? city;
     String? latitude;
     String? longitude;
@@ -31,7 +32,8 @@ class RestaurantModel{
         this.restaurantName,
         this.phone,
         this.email,
-        this.logo,
+        this.imagePath,
+        this.restaurantImage,
         this.startTime,
         this.endTime,
         this.area,

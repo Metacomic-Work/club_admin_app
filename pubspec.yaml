@@ -20,6 +20,8 @@ dependencies:
   google_fonts: ^5.1.0
   pinput: ^2.2.31
   firebase_storage: ^11.2.4
+  geolocator: ^9.0.2
+  shared_preferences: ^2.2.0
   
 
 dev_dependencies:
@@ -29,3 +31,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: sen
+      fonts:
+        - asset: fonts/Sen-Regular.ttf

@@ -1,27 +1,40 @@
+import 'package:club_admin/constants/homeConstants.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
+import 'package:club_admin/views/authorised/tabs/homePage.dart';
+import 'package:club_admin/views/authorised/tabs/menuPage.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+
   int selectedindex = 0;
   int currentIndex = 0;
   PageController controller = PageController(initialPage: 0);
   List tabs = [
     const Center(
-      child: Text("Dashboard"),
+      child: HomePage(),
+    ),
+    const Center(
+      child: MenuPage(),
+    ),
+    const Center(
+      child: Center(child: Text("Temp"),),
     ),
     const Center(
       child: Text('Menu'),
-    ),
-    const Center(
-      child: registerResto(),
     ),
   ];
   @override
@@ -45,42 +58,9 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.white,
             height: height * 0.08,
             iconSize: height * 0.02,
-            items: [
-              FlashyTabBarItem(
-                icon: Icon(
-                  Icons.dashboard_rounded,
-                  color: Colors.black,
-                  size: height * 0.027,
-                ),
-                title: Text(
-                  'Dashboard',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              FlashyTabBarItem(
-                icon: Icon(
-                  Icons.turned_in_rounded,
-                  color: Colors.black,
-                  size: height * 0.03,
-                ),
-                title: Text(
-                  'Manue',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              FlashyTabBarItem(
-                icon: Icon(
-                  Icons.person,
-                  size: height * 0.03,
-                  color: Colors.black,
-                ),
-                title: Text(
-                  'Review',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-            ],
-          )),
+            items: HomeConstants.flashyTabBarItems
+          )
+        ),
     );
   }
 }

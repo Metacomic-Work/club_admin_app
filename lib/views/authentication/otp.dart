@@ -1,4 +1,5 @@
 
+import 'package:club_admin/controllers/authController.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,8 +7,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pinput/pinput.dart';
-
-import '../../controllers/authController.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   var code = '';
-  authController controller = Get.put(authController());
+  AuthController controller = Get.put(AuthController());
   
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,6 @@ class _OtpPageState extends State<OtpPage> {
                           ),
                           onTap: ()async{
                            controller.otpController(controller.code.value);
-                           controller.getUserId();
                           },
                         ),
                 ],

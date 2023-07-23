@@ -1,4 +1,5 @@
 
+import 'package:club_admin/controllers/authController.dart';
 import 'package:club_admin/views/authentication/otp.dart';
 import 'package:flutter/material.dart';
 
@@ -6,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
-import '../../controllers/authController.dart';
 import '../../controllers/userController.dart';
 
 class Login extends StatefulWidget {
@@ -21,7 +20,7 @@ class _LoginState extends State<Login> {
   
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  authController controller = Get.put(authController());
+  AuthController controller = Get.put(AuthController());
   UserController userController = Get.put(UserController());
 
 

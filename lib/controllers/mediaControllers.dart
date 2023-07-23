@@ -9,6 +9,7 @@ class MediaController extends GetxController{
 
 
   Rx<ItemModel> itemModel = ItemModel().obs;
+  
 
  
 
@@ -23,17 +24,3 @@ class MediaController extends GetxController{
 }
 
 
-
-class Med extends StatefulWidget {
-  const Med({super.key});
-
-  @override
-  State<Med> createState() => _MedState();
-}
-
-class _MedState extends State<Med> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}

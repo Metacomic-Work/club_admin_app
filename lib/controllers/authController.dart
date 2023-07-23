@@ -1,4 +1,5 @@
 
+import "package:cloud_firestore/cloud_firestore.dart";
 import "package:club_admin/controllers/userController.dart";
 import "package:club_admin/views/authentication/register.dart";
 import "package:club_admin/views/authorised/registerResto.dart";
@@ -6,18 +7,22 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import "package:shared_preferences/shared_preferences.dart";
+
+import "../views/authentication/login.dart";
 
 
 
 
 
 
-class authController extends GetxController{
+class AuthController extends GetxController{
   final auth = FirebaseAuth.instance;
   TextEditingController textEditingController = TextEditingController();
   var verificationID = ''.obs;
   var code = ''.obs;
   UserController userController = Get.put(UserController());
+
 
   @override
   void onInit() async{
@@ -39,12 +44,15 @@ class authController extends GetxController{
   }
 
 
-  void getUserId() async{
+  Future getUserId() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseAuth CurrentUser = FirebaseAuth.instance;
+
     final User? user = CurrentUser.currentUser;
     final uid = user?.uid;
     userController.UserModel.value.uid = uid;
-    print(uid);
+    await prefs.setString('uid',uid.toString());
+    print("Current user UID$uid");
   }
 
 
@@ -83,10 +91,15 @@ class authController extends GetxController{
 
   void otpController(String otp) async{
     var isVerified = await verifyOtp(otp);
-    isVerified ? Get.offAll(RegisterPage(),
+    isVerified ? Get.to(RegisterPage(),
       duration: Duration(milliseconds: 50), //duration of transitions, default 1 sec
       transition: Transition.rightToLeft
     ) : Get.back();
+  }
+
+  Future<void> logOut() async{
+    await auth.signOut();
+    Get.offAll(Login());
   }
 
 }

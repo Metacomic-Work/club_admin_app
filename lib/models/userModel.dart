@@ -13,8 +13,10 @@ class userModel{
     String? email;
     String? gender;
     dynamic dob;
-    File? profileImage;
+    String? imagePath;
+    String? profileImage;
     String? location;
+    int? totalRestaurants;
     bool? isDj;
     bool? isOwner;
 
@@ -23,10 +25,12 @@ class userModel{
         this.name,
         this.phone,
         this.email,
+        this.imagePath,
         this.gender,
         this.dob,
         this.profileImage,
         this.location,
+        this.totalRestaurants = 0,
         this.isDj = false,
         this.isOwner = true,
   
