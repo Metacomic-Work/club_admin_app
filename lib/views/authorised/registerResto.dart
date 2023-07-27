@@ -95,6 +95,31 @@ class _RegisterRestaurantState extends State<RegisterRestaurant> {
                               Divider(),
                             ]),
                           ),
+                            Container(
+                              width: width * 0.9,
+                              height: height * 0.06,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(color:const Color.fromARGB(255, 27, 27, 27))
+                              ),
+                              child: Row(
+                                children: [
+                                  //if(restaurantController.restaurantModel.value.currentAddress != null)
+                                  Obx( 
+                                    ()=> Container(
+                                      width: width *0.65,
+                                      child:  Text(restaurantController.restaurantModel.value.currentAddress.toString(),style:const TextStyle(fontSize: 15,fontFamily: 'sen', overflow: TextOverflow.ellipsis,),maxLines: 1,)
+                                      )
+                                    ),
+                                  InkWell(
+                                    child: Text("Locate me",style: TextStyle(fontSize: 18,color: Colors.blue),),
+                                    onTap: ()async {
+                                      await restaurantController.getCurrentPosition();
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
                           textField(
                               name: "area",
                               controller: area,

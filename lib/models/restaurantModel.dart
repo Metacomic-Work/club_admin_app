@@ -2,6 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:geolocator/geolocator.dart';
+
 RestaurantModel userFromJson(String str) => RestaurantModel.fromJson(json.decode(str));
 //String userToJson(RestaurantModel data) => json.encode(data.toJson());
 
@@ -22,6 +24,9 @@ class RestaurantModel{
     String? city;
     String? latitude;
     String? longitude;
+    String? address;
+    String? currentAddress;
+    Position? position;
     String? type;
     bool? isAvailable;
     bool? isOwnew;
@@ -41,11 +46,13 @@ class RestaurantModel{
         this.pincode,
         this.latitude,
         this.longitude,
+        this.address,
+        this.currentAddress,
+        this.position,
         this.city,
         this.type,
         this.isAvailable  = true,
         this.isOwnew = false,
-  
     });
 
     

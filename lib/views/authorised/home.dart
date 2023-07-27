@@ -4,6 +4,11 @@ import 'package:club_admin/views/authorised/tabs/homePage.dart';
 import 'package:club_admin/views/authorised/tabs/menuPage.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../controllers/menuItemsController.dart';
+import '../../controllers/restaurantController.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,10 +18,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  RestaurantController restaurantController = Get.put(RestaurantController());
+  MenuItemController menuItemController = Get.put(MenuItemController());
+
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    restaurantController.getRestaurantData();
+    menuItemController.getMenuItemStream();
   }
 
 
@@ -31,7 +41,7 @@ class _HomeState extends State<Home> {
       child: MenuPage(),
     ),
     const Center(
-      child: Center(child: Text("Temp"),),
+      child: RegisterRestaurant(),
     ),
     const Center(
       child: Text('Menu'),

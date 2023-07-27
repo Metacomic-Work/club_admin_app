@@ -5,6 +5,7 @@ import 'package:club_admin/controllers/restaurantController.dart';
 import 'package:club_admin/controllers/userController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     UserController userController = Get.put(UserController());
     HomeController homeController = Get.put(HomeController());
     AuthController authController = Get.put(AuthController());
-    
+    bool toggle = false;
 
 
 
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool toggle = false;
+    
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -58,14 +59,21 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: CupertinoSwitch(
-                        activeColor: Colors.green,
+                      child: FlutterSwitch(
+                        width: 100.0,
+                        height: 50.0,
+                        valueFontSize: 18.0,
+                        toggleSize: 35.0,
                         value: toggle,
-                        onChanged: (val){
-                          setState(() {
-                            toggle = val;
-                          });
-                        }
+                        borderRadius: 30.0,
+                        activeColor: Color.fromARGB(255, 80, 233, 85),
+                        padding: 5.0,
+                        showOnOff: true,
+                        onToggle: (val) {
+                        setState(() {
+                          toggle = val;
+                        });
+                      },
                       ),
                     ),
                      Padding(

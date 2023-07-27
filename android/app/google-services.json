@@ -67,6 +67,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1082350793346-p0d18iq9oqinoqb4j0l2mtsq5bp5pnnu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.club_admin",
+            "certificate_hash": "194c5ab4ed283635e0b9fb282aace6e1e4e6614b"
+          }
+        },
+        {
           "client_id": "1082350793346-3acp9ht0tne9vvvop3mrndc236p7nplq.apps.googleusercontent.com",
           "client_type": 3
         }

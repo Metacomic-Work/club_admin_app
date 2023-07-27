@@ -22,6 +22,11 @@ dependencies:
   firebase_storage: ^11.2.4
   geolocator: ^9.0.2
   shared_preferences: ^2.2.0
+  cached_network_image: ^3.2.3
+  loading_animation_widget: ^1.2.0+4
+  flutter_switch: ^0.3.2
+  geocoding: ^2.1.0
+  fluttertoast: ^8.2.2
   
 
 dev_dependencies:
@@ -35,4 +40,7 @@ flutter:
   fonts:
     - family: sen
       fonts:
-        - asset: fonts/Sen-Regular.ttf
+        - asset: assets/fonts/Sen-Regular.ttf
+
+  assets:
+    - assets/icons/

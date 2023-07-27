@@ -4,12 +4,10 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 
-ItemModel userFromJson(String str) => ItemModel.fromJson(json.decode(str));
-
 //String userToJson(ItemModel data) => json.encode(data.toJson());
 
 class ItemModel extends GetxController{
-    String? uid;
+    String? itemId;
     String? itemName;
     String? description;
     String? price;
@@ -23,7 +21,7 @@ class ItemModel extends GetxController{
     bool? isSpecial;
 
     ItemModel({
-        this.uid,
+        this.itemId,
         this.description,
         this.price,
         this.itemType,
@@ -38,10 +36,6 @@ class ItemModel extends GetxController{
   
     });
 
-    factory ItemModel.fromJson(Map<String, dynamic> json) => ItemModel(
-        uid: json["uid"],
-        
-    );
 
     
 }

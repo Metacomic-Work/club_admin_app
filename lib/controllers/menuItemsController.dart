@@ -8,15 +8,22 @@ import 'package:club_admin/models/restaurantModel.dart';
 import 'package:club_admin/models/userModel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuItemController extends GetxController{
   Rx<ItemModel> itemModel = ItemModel().obs;
+
+  final itemNameController = TextEditingController();
+  final itemPriceController = TextEditingController();
+  final itemTypeController = TextEditingController();
+  final itemDesController = TextEditingController();
+
   Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
   UserController userController = Get.put(UserController());
+  Stream<QuerySnapshot<Map<String, dynamic>>>? menuItemStream;
   
-
 
   void addItem() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,26 +35,31 @@ class MenuItemController extends GetxController{
       .doc(restoId)
       .collection('menu');
       print(restoId);
-    
-    try{
-      await itemId.add({
+
+    final itemCollection = FirebaseFirestore.instance
+      .collection('Restaurants')
+      .doc(restoId)
+      .collection('menu')
+      .doc();
+
+    itemModel.value.itemId = itemCollection.id;    
+    Map<String,dynamic> itemData = ({
+        "ItemId": itemModel.value.itemId,
         "ItemName":itemModel.value.itemName,
         "ItemPrice":itemModel.value.price,
         "ItemDescription":itemModel.value.description,
         "ItemType":itemModel.value.itemType,
         "ItemImage":itemModel.value.itemImage,
-      });
+    });
+    
+    try{
+      await itemId.add(itemData);
+      await itemCollection.set(itemData);
     }catch(e){
       print("Item cannot upload");
       print(e);
     }
-
   }
-
-
-
-
-
 
   Future<void> uploadItemImage(file) async{
     String url = '';
@@ -63,10 +75,21 @@ class MenuItemController extends GetxController{
     }catch(e){
       print("Cannot Upload Image or Get link");
       print(e);
-    } 
+    }
+   
+  }
 
+  Future<dynamic> getMenuItemStream() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    menuItemStream = FirebaseFirestore.instance
+      .collection('RestaurantOwner')
+      .doc(prefs.getString('uid').toString())
+      .collection('RestaurantDetails')
+      .doc(prefs.getString('restoID'))
+      .collection('menu').orderBy("ItemPrice",descending:false ).snapshots();
   }
 }
+  
   
   
 
