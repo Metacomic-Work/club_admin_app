@@ -19,7 +19,6 @@ class ItemModel extends GetxController{
     bool? recomended;
     bool? isAvailable;
     bool? isSpecial;
-
     ItemModel({
         this.itemId,
         this.description,
