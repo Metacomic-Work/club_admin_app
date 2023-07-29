@@ -1,6 +1,7 @@
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:club_admin/controllers/userController.dart";
+import "package:club_admin/views/authentication/checkRestaurants.dart";
 import "package:club_admin/views/authentication/register.dart";
 import "package:club_admin/views/authorised/registerResto.dart";
 import "package:firebase_auth/firebase_auth.dart";
@@ -47,7 +48,6 @@ class AuthController extends GetxController{
   Future getUserId() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseAuth CurrentUser = FirebaseAuth.instance;
-
     final User? user = CurrentUser.currentUser;
     final uid = user?.uid;
     userController.UserModel.value.uid = uid;
@@ -89,17 +89,37 @@ class AuthController extends GetxController{
   }
   
 
+  Future<bool> checkRestaurants() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
+      .collection('RestaurantOwner')
+      .doc(userController.UserModel.value.uid)
+      .collection('Restaurants').get();
+    if(query.docs.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void otpController(String otp) async{
     var isVerified = await verifyOtp(otp);
-    isVerified ? Get.to(RegisterPage(),
-      duration: Duration(milliseconds: 50), //duration of transitions, default 1 sec
-      transition: Transition.rightToLeft
-    ) : Get.back();
+    if(isVerified){
+      await getUserId();
+      bool isCollectionExist =await checkRestaurants();
+      if(isCollectionExist){
+         Get.to(CheckRestaurants(),duration:const Duration(milliseconds: 50),transition: Transition.rightToLeft);
+      }else{
+        Get.to(RegisterPage(),duration:const Duration(milliseconds: 50),transition: Transition.rightToLeft);
+      }
+    }
+    else{
+      Get.back();
+    }
   }
 
   Future<void> logOut() async{
     await auth.signOut();
     Get.offAll(Login());
   }
-
 }

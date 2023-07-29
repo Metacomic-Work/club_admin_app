@@ -1,3 +1,4 @@
+import 'package:club_admin/views/authentication/checkRestaurants.dart';
 import 'package:club_admin/views/authentication/login.dart';
 import 'package:club_admin/views/authorised/home.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';

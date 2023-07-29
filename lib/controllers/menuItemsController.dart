@@ -14,13 +14,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuItemController extends GetxController{
   Rx<ItemModel> itemModel = ItemModel().obs;
+  Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
 
   final itemNameController = TextEditingController();
   final itemPriceController = TextEditingController();
   final itemTypeController = TextEditingController();
   final itemDesController = TextEditingController();
 
-  Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
+  
   UserController userController = Get.put(UserController());
   Stream<QuerySnapshot<Map<String, dynamic>>>? menuItemStream;
   
@@ -34,6 +35,7 @@ class MenuItemController extends GetxController{
       .collection('RestaurantDetails')
       .doc(restoId)
       .collection('menu');
+
       print(restoId);
 
     final itemCollection = FirebaseFirestore.instance

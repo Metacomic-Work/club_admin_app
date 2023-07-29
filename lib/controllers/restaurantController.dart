@@ -16,7 +16,7 @@ class RestaurantController extends GetxController{
   Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
   UserController userController = Get.put(UserController());
 
-  Future<void> getCurrentPosition() async{
+  Future<void> getCurrentPosition() async {
     bool serviceEnabled = false;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -74,9 +74,6 @@ class RestaurantController extends GetxController{
         "RestaurantType":restaurantModel.value.type,
         "isAvailable": restaurantModel.value.isAvailable,
       });
-      
-        
-
     }catch(e){
       print("Registration Unsuccessful\n");
       print(e);
@@ -159,9 +156,10 @@ class RestaurantController extends GetxController{
     restaurantModel.value.restaurantName = restoData?['RestaurantName'];
     restaurantModel.value.restaurantImage = restoData?['RestaurantLogo'];
     restaurantModel.value.type = restoData?['RestaurantType'];
-
-
   }
+
+
+  
   
 
 }
