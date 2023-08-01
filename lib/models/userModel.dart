@@ -8,6 +8,7 @@ userModel userFromJson(String str) => userModel.fromJson(json.decode(str));
 
 class userModel{
     String? uid;
+    String? token;
     String? name;
     String? phone;
     String? email;
@@ -17,11 +18,13 @@ class userModel{
     String? profileImage;
     String? location;
     int? totalRestaurants;
+    String? selectedRestaurant;
     bool? isDj;
     bool? isOwner;
 
     userModel({
         this.uid,
+        this.token,
         this.name,
         this.phone,
         this.email,
@@ -30,6 +33,7 @@ class userModel{
         this.dob,
         this.profileImage,
         this.location,
+        this.selectedRestaurant,
         this.totalRestaurants = 0,
         this.isDj = false,
         this.isOwner = true,

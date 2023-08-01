@@ -11,6 +11,7 @@ class RestaurantModel{
 
     String? uid; // admin uid
     String? restoId; // current doc uid
+    String? token;
     String? restaurantName;
     String? phone;
     String? email;
@@ -34,6 +35,7 @@ class RestaurantModel{
     RestaurantModel({
         this.uid,
         this.restoId,
+        this.token,
         this.restaurantName,
         this.phone,
         this.email,

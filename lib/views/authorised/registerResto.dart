@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:club_admin/components/formComponents/formImage.dart';
 import 'package:club_admin/controllers/restaurantController.dart';
-import 'package:club_admin/views/authorised/home.dart';
+import 'package:club_admin/services/notificationServices.dart';
+import 'package:club_admin/views/authorised/Home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -34,7 +35,14 @@ class RegisterRestaurant extends StatefulWidget {
 class _RegisterRestaurantState extends State<RegisterRestaurant> {
   
   RestaurantController restaurantController = Get.put(RestaurantController());
+  NotificationServices notificationServices = NotificationServices();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notificationServices.getDeviceToken();
+  }
 
   @override
   Widget build(BuildContext context) {
