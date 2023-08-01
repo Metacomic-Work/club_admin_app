@@ -10,6 +10,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../controllers/menuItemsController.dart';
 import '../../controllers/restaurantController.dart';
+import '../../services/notificationServices.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -22,12 +23,20 @@ class _HomeState extends State<Home> {
   RestaurantController restaurantController = Get.put(RestaurantController());
   MenuItemController menuItemController = Get.put(MenuItemController());
 
+  NotificationServices notificationServices = NotificationServices();
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
     restaurantController.getRestaurantData();
     menuItemController.getMenuItemStream();
+    notificationServices.requestNotificationPermission();
+    notificationServices.firebaseInit(BuildContext);
+    notificationServices.setupInteractMessage(BuildContext);
+    notificationServices.isTokenRefresh();
+    notificationServices.getDeviceToken().then((value){
+      print("Device token $value");
+    });
   }
 
 

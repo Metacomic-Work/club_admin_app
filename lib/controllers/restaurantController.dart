@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../views/authorised/home.dart';
+import '../views/authorised/Home.dart';
 
 class RestaurantController extends GetxController{
 
@@ -60,6 +60,7 @@ class RestaurantController extends GetxController{
     .doc();
     restaurantModel.value.restoId = restoID.id;
     await prefs.setString('restoID', restaurantModel.value.restoId.toString());
+  
 
 
     try{
@@ -85,6 +86,8 @@ class RestaurantController extends GetxController{
 
 
   void registerRestaurantDetails()async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userController.UserModel.value.token = await prefs.getString('token');
     final restoCollection = FirebaseFirestore.instance
       .collection('Restaurants')
       .doc(restaurantModel.value.restoId);
@@ -97,6 +100,7 @@ class RestaurantController extends GetxController{
 
     Map<String,dynamic> data = ({
         "uid": userController.UserModel.value.uid,
+        "token": userController.UserModel.value.token,
         "RestoId": restaurantModel.value.restoId,
         "RestaurantName": restaurantModel.value.restaurantName,
         "Phone": restaurantModel.value.phone,

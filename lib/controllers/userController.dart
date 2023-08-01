@@ -6,18 +6,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/userModel.dart';
+import '../views/authorised/Home.dart';
 
 class UserController extends GetxController{
   Rx<userModel> UserModel = userModel().obs;
 
 
   void registerUser() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserModel.value.token =await prefs.getString('token');
+    
       final UserId = FirebaseFirestore.instance.collection('users').doc(UserModel.value.uid);
       try{
         await UserId.set({
           "uid":UserModel.value.uid,
+          "token": UserModel.value.token,
           "UserName":UserModel.value.name,
           "Gender":UserModel.value.gender,
           "Phone":UserModel.value.phone,
@@ -42,6 +48,7 @@ class UserController extends GetxController{
       try{
         await UserId.set({
           "uid":UserModel.value.uid,
+          "token": UserModel.value.token,
           "UserName":UserModel.value.name,
           "Gender":UserModel.value.gender,
           "Phone":UserModel.value.phone,
@@ -76,5 +83,9 @@ class UserController extends GetxController{
     return url; 
   }
 
-
+  Future selectRestaurant(restoId)async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('restoID', restoId);
+    Get.to(Home());
+  }
 }

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../authorised/Home.dart';
+
 class CheckRestaurants extends StatelessWidget {
   const CheckRestaurants({super.key});
 
@@ -16,6 +18,20 @@ class CheckRestaurants extends StatelessWidget {
     double w = MediaQuery.of(context).size.width;
     UserController userController = Get.put(UserController());
     return Scaffold(
+      bottomNavigationBar: InkWell(
+        child: Container(
+          width: w,
+          height: h * 0.06,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Colors.blue,
+          ),
+          child: Center(child: Text("Add Restaurant",style: TextStyle(fontFamily: 'sen',fontSize: 18,color: Colors.white),)),
+        ),
+        onTap: (){
+          Get.to(RegisterRestaurant());
+        },
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(8.0),
@@ -25,8 +41,8 @@ class CheckRestaurants extends StatelessWidget {
               Text("Registered Restaurants",style: TextStyle(fontSize: 25,fontFamily: 'sen',fontWeight: FontWeight.bold),),
               SizedBox(height: 15,),
               Container(
-                width: w* 0.9,
-                height: h * 0.7,
+                width: w* 0.95,
+                height: h * 0.8,
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance.collection('RestaurantOwner').doc(userController.UserModel.value.uid).collection('Restaurants').snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
@@ -45,62 +61,55 @@ class CheckRestaurants extends StatelessWidget {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context,index){
                           return InkWell(
-    child: Container(
-      height: 170,
-      margin: const EdgeInsets.only(top: 8, bottom: 8),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(
-              color: const Color.fromARGB(255, 237, 237, 237),
-              style: BorderStyle.solid,
-              width: 1),
-          color: const Color.fromARGB(255, 244, 244, 244),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.1),
-              blurRadius: 30,
-              offset: const Offset(0, 10),
-            )
-          ]),
-      child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Stack(
-                children: <Widget>[
-                  Container(
-                    width: 110,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(.1),
-                            blurRadius: 30,
-                            offset: const Offset(0, 5),
-                          )
-                        ],
-                        image: DecorationImage(
-                            image: NetworkImage(snapshot.data!.docs[index]['RestaurantLogo']),
-                            fit: BoxFit.cover)),
-                  ),
-                  Container(
-                    width: 110,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        gradient: LinearGradient(
-                            begin: FractionalOffset.topCenter,
-                            end: FractionalOffset.bottomCenter,
-                            colors: [
-                              const Color.fromARGB(255, 210, 210, 210)
-                                  .withOpacity(0.0),
-                              const Color.fromARGB(166, 31, 31, 31),
-                            ],
-                            stops:const [
-                              0.0,1.0
-                            ])),
-                  ),
+                            child: Container(
+                              height: 170,
+                              margin: const EdgeInsets.only(top: 8, bottom: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                border: Border.all(color: const Color.fromARGB(255, 237, 237, 237),style: BorderStyle.solid,width: 1),
+                                color: const Color.fromARGB(255, 244, 244, 244),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(.1),blurRadius: 30,offset: const Offset(0, 10),
+                                    )
+                                  ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Row(
+                                      children: [
+                                        Stack(
+                                          children: <Widget>[
+                                            Container(
+                                              width: 110,
+                                              decoration: BoxDecoration(
+                                                borderRadius:const BorderRadius.all(Radius.circular(10)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withOpacity(.1),
+                                                    blurRadius: 30,
+                                                    offset: const Offset(0, 5),
+                                                  )
+                                                ],
+                                                image: DecorationImage(
+                                                  image: NetworkImage(snapshot.data!.docs[index]['RestaurantLogo']),
+                                                  fit: BoxFit.cover)),
+                                                ),
+                                                Container(
+                                                  width: 110,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:const BorderRadius.all(Radius.circular(10)),
+                                                    gradient: LinearGradient(
+                                                      begin: FractionalOffset.topCenter,
+                                                      end: FractionalOffset.bottomCenter,
+                                                      colors: [
+                                                      const Color.fromARGB(255, 210, 210, 210).withOpacity(0.0),
+                                                      const Color.fromARGB(166, 31, 31, 31),
+                                                      ],
+                                                      stops:const [
+                                                        0.0,1.0
+                                                      ])
+                                                    ),
+                                                  ),
                   Positioned(
                     bottom: 14,
                     child: offer(index),
@@ -160,13 +169,15 @@ class CheckRestaurants extends StatelessWidget {
           )),
     ),
     onTap: () async {
+      userController.UserModel.value.selectedRestaurant =await snapshot.data!.docs[index]['RestoId'];
+      await userController.selectRestaurant(userController.UserModel.value.selectedRestaurant);
     },
   );
                         },
                       );
                   },
                 ),
-              )
+              ),
             ],
           )
         ),

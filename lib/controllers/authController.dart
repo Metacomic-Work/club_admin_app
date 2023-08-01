@@ -108,13 +108,10 @@ class AuthController extends GetxController{
       await getUserId();
       bool isCollectionExist =await checkRestaurants();
       if(isCollectionExist){
-         Get.to(CheckRestaurants(),duration:const Duration(milliseconds: 50),transition: Transition.rightToLeft);
+        Get.to(CheckRestaurants(),duration:const Duration(milliseconds: 50),transition: Transition.rightToLeft);
       }else{
         Get.to(RegisterPage(),duration:const Duration(milliseconds: 50),transition: Transition.rightToLeft);
       }
-    }
-    else{
-      Get.back();
     }
   }
 

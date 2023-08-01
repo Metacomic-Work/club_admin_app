@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:club_admin/controllers/authController.dart';
+import 'package:club_admin/services/notificationServices.dart';
 import 'package:club_admin/views/authentication/login.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,12 +24,14 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
+  NotificationServices notificationServices = NotificationServices();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     authController.getUserId();
+    notificationServices.getDeviceToken();
   }
 
   @override
