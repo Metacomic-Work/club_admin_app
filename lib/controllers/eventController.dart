@@ -1,16 +1,10 @@
-import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/eventModel.dart';
 import '../models/ticketModel.dart';
 
-class EventController extends GetxController {
-  
-}
+class EventController extends GetxController {}
 
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -52,11 +46,12 @@ class FirestoreService {
     batch.update(eventRef, {
       'available_seats': FieldValue.increment(-quantity),
     });
- 
+
     await batch.commit();
   }
 
   // Method to get a list of events from the "events" collection.
+
   Stream<List<Event>> getEvents() {
     return _db.collection('events').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -83,18 +78,29 @@ class FirestoreService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
-        print(doc);
+        List<PersonDetails> personDetailsList = [];
+        if (doc['user_details'] is List) {
+          personDetailsList = List<PersonDetails>.from(
+              doc['user_details'].map((person) => PersonDetails(
+                    name: person['name'],
+                    phone: person['phone'],
+                    gender: person['gender'],
+                  )));
+        }
+
         return Ticket(
           ticketId: doc.id,
           eventId: doc['event_id'],
           userId: doc['user_id'],
           ticketType: doc['ticket_type'],
           purchaseDate: doc['purchase_date'].toDate(),
-          quantity: doc['quantity'],
           totalPrice: doc['total_price'],
-          userDetails: Map<String, dynamic>.from(doc['user_details']),
+          personDetails: personDetailsList,
         );
       }).toList();
     });
   }
 }
+
+// description
+// add person name,phone ,gender,

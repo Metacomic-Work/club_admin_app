@@ -79,11 +79,13 @@ class EventHostingUserUI extends StatelessWidget {
               itemCount: tickets.length,
               itemBuilder: (context, index) {
                 final ticket = tickets[index];
+                final personDetails = ticket.personDetails;
+
                 return ListTile(
-                  title: Text(ticket.userDetails['name']),
-                  subtitle: Text(ticket.userDetails['email']),
-                  trailing: Text('Quantity: ${ticket.quantity}'),
-                  // Add other ticket details
+                  
+                  title: Text(personDetails[0].name),
+                  subtitle: Text(personDetails[0].phone),
+                  trailing: Text('Quantity: ${personDetails.length}'),
                 );
               },
             );
