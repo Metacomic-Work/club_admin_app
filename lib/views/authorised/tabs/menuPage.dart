@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:club_admin/controllers/menuItemsController.dart';
-import 'package:club_admin/controllers/restaurantController.dart';
-import 'package:club_admin/views/authentication/login.dart';
-import 'package:club_admin/views/authorised/addItem.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:club_admin/controllers/menuItemsController.dart';
+import 'package:club_admin/controllers/restaurantController.dart';
+import 'package:club_admin/views/authorised/addItem.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});

@@ -1,5 +1,6 @@
 import 'package:club_admin/constants/homeConstants.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
+import 'package:club_admin/views/authorised/tabs/eventsPage.dart';
 import 'package:club_admin/views/authorised/tabs/homePage.dart';
 import 'package:club_admin/views/authorised/tabs/menuPage.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
@@ -49,11 +50,9 @@ class _HomeState extends State<Home> {
     const Center(
       child: MenuPage(),
     ),
+      EventHostingUserUI(),
     const Center(
       child: RegisterRestaurant(),
-    ),
-    const Center(
-      child: Text('Menu'),
     ),
   ];
   @override
