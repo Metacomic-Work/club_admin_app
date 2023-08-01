@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:club_admin/controllers/authController.dart';
 import 'package:club_admin/controllers/homeController.dart';
-import 'package:club_admin/controllers/restaurantController.dart';
 import 'package:club_admin/controllers/userController.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
