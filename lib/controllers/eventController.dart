@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/eventModel.dart';
 import '../models/ticketModel.dart';
 
-class EventController extends GetxController {}
+// class  extends GetxController {}
 
-class FirestoreService {
+class EventController extends GetxController{
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Method to create a new event in the "events" collection.

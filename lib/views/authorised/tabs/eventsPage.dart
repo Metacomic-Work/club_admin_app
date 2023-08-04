@@ -8,7 +8,7 @@ import '../../../controllers/eventController.dart';
 import '../../../models/eventModel.dart';
 
 class EventHostingUserUI extends StatelessWidget {
-  final FirestoreService firestoreService = FirestoreService();
+  EventController eventsController = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class EventHostingUserUI extends StatelessWidget {
         title: const Text('Event Hosting Dashboard'),
       ),
       body: StreamBuilder<List<Event>>(
-        stream: firestoreService.getEvents(),
+        stream: eventsController.getEvents(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final events = snapshot.data!;
@@ -66,7 +66,7 @@ class EventHostingUserUI extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (context) => StreamBuilder<List<Ticket>>(
-        stream: firestoreService.getEventTickets(eventId),
+        stream: eventsController.getEventTickets(eventId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final tickets = snapshot.data!;

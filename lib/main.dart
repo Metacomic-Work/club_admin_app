@@ -17,11 +17,8 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-<<<<<<< HEAD
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-=======
   Get.put<EventController>(EventController());
->>>>>>> c24f9897c168c7cb9e281aca3877246ccbbac3ae
   runApp(const MainApp());
 } 
 

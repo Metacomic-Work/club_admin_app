@@ -12,6 +12,7 @@ class ItemModel extends GetxController{
     String? description;
     String? price;
     String? itemType = 'veg';
+    int? quantity;
     int? serving;
     int? discount;
     String? itemImage;
@@ -22,6 +23,7 @@ class ItemModel extends GetxController{
     ItemModel({
         this.itemId,
         this.description,
+        this.quantity,
         this.price,
         this.itemType,
         this.serving,

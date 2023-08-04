@@ -10,6 +10,7 @@ class PersonDetails {
   });
 }
 
+
 class Ticket {
   final String ticketId;
   final String eventId;
