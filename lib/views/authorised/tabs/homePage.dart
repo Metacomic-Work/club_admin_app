@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:club_admin/controllers/authController.dart';
 import 'package:club_admin/controllers/homeController.dart';
 import 'package:club_admin/controllers/userController.dart';
+import 'package:club_admin/views/authorised/tabs/event_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
@@ -38,8 +39,12 @@ class _HomePageState extends State<HomePage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+       floatingActionButton: FloatingActionButton(onPressed: (){
+          Get.to(()=>EventListScreen());
+        }),
       backgroundColor: const Color.fromARGB(255, 247, 252, 255),
       body: SafeArea(
+        
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:club_admin/constants/homeConstants.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
+import 'package:club_admin/views/authorised/tabs/event_list_screen.dart';
 import 'package:club_admin/views/authorised/tabs/eventsPage.dart';
 import 'package:club_admin/views/authorised/tabs/homePage.dart';
 import 'package:club_admin/views/authorised/tabs/menuPage.dart';
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
     const Center(
       child: MenuPage(),
     ),
-      EventHostingUserUI(),
+      EventsScreen(),
     const Center(
       child: RegisterRestaurant(),
     ),
@@ -60,6 +61,7 @@ class _HomeState extends State<Home> {
     dynamic height = MediaQuery.sizeOf(context).height;
     return SafeArea(
       child: Scaffold(
+       
           backgroundColor: Colors.white,
           body: Center(
             child: tabs[selectedindex],

@@ -7,52 +7,41 @@ import 'package:get/get.dart';
 import '../../../controllers/eventController.dart';
 import '../../../models/eventModel.dart';
 
-class EventHostingUserUI extends StatelessWidget {
-  final FirestoreService firestoreService = FirestoreService();
+class EventsScreen extends StatelessWidget {
+  final EventController _eventController = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Get.to(() => CreateEventScreen());
-          }),
+        child: Icon(Icons.add),
+        onPressed: () {
+          Get.to(() => CreateEventScreen());
+        },
+      ),
       appBar: AppBar(
         title: const Text('Event Hosting Dashboard'),
       ),
       body: StreamBuilder<List<Event>>(
-        stream: firestoreService.getEvents(),
+        stream: _eventController.getEvents(),
         builder: (context, snapshot) {
+          
           if (snapshot.hasData) {
             final events = snapshot.data!;
+
             return ListView.builder(
               itemCount: events.length,
               itemBuilder: (context, index) {
                 final event = events[index];
-                return Card(
-                  child: ListTile(
-                    leading: SizedBox(
-                        height: 80,
-                        width: 100,
-                        child: AspectRatio(
-                            aspectRatio: 9 / 18,
-                            child: CachedNetworkImage(
-                                fit: BoxFit.cover, imageUrl: event.imageUrl))),
-                    title: Text(event.name,
-                        style: Theme.of(context).textTheme.titleLarge),
-                    subtitle: Text(
-                      event.description,
-                      maxLines: 2,
-                    ),
-                    onTap: () => _showEventTickets(context, event.eventId),
-                  ),
+                return EventCard(
+                  event: event,
+                  onTap: () => _showEventTickets(context, event.eventId),
                 );
               },
             );
           } else if (!snapshot.hasData) {
             return const Center(
-              child: Text('Nodata found'),
+              child: Text('No data found'),
             );
           } else {
             return const Center(child: CircularProgressIndicator());
@@ -66,29 +55,20 @@ class EventHostingUserUI extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (context) => StreamBuilder<List<Ticket>>(
-        stream: firestoreService.getEventTickets(eventId),
+        stream: _eventController.getEventTickets(eventId),
         builder: (context, snapshot) {
+          if(snapshot.hasError){
+            print(snapshot.error);
+          }
           if (snapshot.hasData) {
             final tickets = snapshot.data!;
-            if (tickets.isEmpty) {
+            if (tickets.isNotEmpty) {
+              return TicketList(tickets: tickets);
+            } else {
               return const Center(
-                child: Text("No tickets are purchased at!"),
+                child: Text("No tickets are purchased yet!"),
               );
             }
-            return ListView.builder(
-              itemCount: tickets.length,
-              itemBuilder: (context, index) {
-                final ticket = tickets[index];
-                final personDetails = ticket.personDetails;
-
-                return ListTile(
-                  
-                  title: Text(personDetails[0].name),
-                  subtitle: Text(personDetails[0].phone),
-                  trailing: Text('Quantity: ${personDetails.length}'),
-                );
-              },
-            );
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -97,3 +77,99 @@ class EventHostingUserUI extends StatelessWidget {
     );
   }
 }
+
+class EventCard extends StatelessWidget {
+  final Event event;
+  final VoidCallback onTap;
+
+  EventCard({required this.event, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        leading: SizedBox(
+          height: 80,
+          width: 100,
+          child: AspectRatio(
+            aspectRatio: 9 / 18,
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: event.imageUrl,
+            ),
+          ),
+        ),
+        title: Text(
+          event.name,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        subtitle: Text(
+          event.description,
+          maxLines: 2,
+        ),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+class TicketList extends StatelessWidget {
+  final List<Ticket> tickets;
+
+  TicketList({required this.tickets});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: tickets.length,
+      itemBuilder: (context, index) {
+        final ticket = tickets[index];
+        final personDetails = ticket.personDetails;
+
+        return ListTile(
+          title: Text(personDetails[0].name),
+          subtitle: Text(personDetails[0].phone),
+          trailing: Text('Quantity: ${personDetails.length}'),
+          onTap: () => _showTicketDetails(context, ticket),
+        );
+      },
+    );
+  }
+
+  void _showTicketDetails(BuildContext context, Ticket ticket) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Ticket Details'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Event ID: ${ticket.eventId}'),
+              Text('Ticket ID: ${ticket.ticketId}'),
+              Text('Ticket Type: ${ticket.ticketType}'),
+              Text('Purchase Date: ${ticket.purchaseDate.toString()}'),
+              Text('Total Price: ${ticket.totalPrice}'),
+              Text('Person Details:'),
+              for (var person in ticket.personDetails)
+                ListTile(
+                  title: Text('Name: ${person.name}'),
+                  subtitle: Text('Phone: ${person.phone}, Gender: ${person.gender}'),
+                ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+ 

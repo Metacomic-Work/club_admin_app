@@ -5,12 +5,11 @@ import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 
 RestaurantModel userFromJson(String str) => RestaurantModel.fromJson(json.decode(str));
-//String userToJson(RestaurantModel data) => json.encode(data.toJson());
-
+ 
 class RestaurantModel{
 
-    String? uid; // admin uid
-    String? restoId; // current doc uid
+    String? uid;  
+    String? restoId;  
     String? token;
     String? restaurantName;
     String? phone;
@@ -64,7 +63,6 @@ class RestaurantModel{
         restaurantName: json["name"],
         phone: json["phone"],
         email: json["email"],
-        
     );
 
       
