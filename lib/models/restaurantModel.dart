@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:geolocator/geolocator.dart';
 
 RestaurantModel userFromJson(String str) => RestaurantModel.fromJson(json.decode(str));

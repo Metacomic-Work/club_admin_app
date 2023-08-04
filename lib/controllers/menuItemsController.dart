@@ -24,7 +24,7 @@ class MenuItemController extends GetxController{
   
   UserController userController = Get.put(UserController());
   Stream<QuerySnapshot<Map<String, dynamic>>>? menuItemStream;
-  
+
 
   void addItem() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

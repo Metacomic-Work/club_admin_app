@@ -33,6 +33,7 @@ class PersonDetails {
   factory PersonDetails.fromJson(String source) => PersonDetails.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+
 class Ticket {
   final String ticketId;
   final String eventId;

@@ -125,7 +125,6 @@ class NotificationServices{
       if(initialMessage != null){
         handleMessage(initialMessage);
       }
-
       FirebaseMessaging.onMessageOpenedApp.listen((event) {
         handleMessage(event);
       });

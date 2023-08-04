@@ -83,8 +83,6 @@ class RestaurantController extends GetxController{
   }
 
 
-
-
   void registerRestaurantDetails()async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userController.UserModel.value.token = await prefs.getString('token');
