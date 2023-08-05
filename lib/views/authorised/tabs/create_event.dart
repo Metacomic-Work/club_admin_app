@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,7 +18,8 @@ class CreateEventScreen extends StatefulWidget {
 }
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
-  EventController eventsController = Get.put(EventController());
+  final EventController _eventController = Get.put(EventController());
+
   XFile? _image;
   final TextEditingController _eventNameController = TextEditingController();
   final TextEditingController _eventDescriptionController =
@@ -226,7 +229,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         imageUrl: imgUrl ?? "",
       );
 
-      eventsController.createEvent(event).then((_) {
+      _eventController.createEvent(event).then((_) {
         Navigator.pop(context);
       }).catchError((error) {
         showDialog(

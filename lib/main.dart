@@ -16,9 +16,9 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  Get.put<EventController>(EventController());
+  ); 
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler); 
+  Get.put<EventController>(EventController()); 
   runApp(const MainApp());
 } 
 

@@ -91,7 +91,7 @@ class CheckRestaurants extends StatelessWidget {
                                                   )
                                                 ],
                                                 image: DecorationImage(
-                                                  image: NetworkImage(snapshot.data!.docs[index]['RestaurantLogo']),
+                                                  image: NetworkImage(snapshot.data!.docs[index]['RestaurantLogo']??""),
                                                   fit: BoxFit.cover)),
                                                 ),
                                                 Container(
