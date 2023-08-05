@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../controllers/homeController.dart';
 import '../../controllers/menuItemsController.dart';
 import '../../controllers/restaurantController.dart';
 import '../../services/notificationServices.dart';
@@ -22,21 +23,14 @@ class _HomeState extends State<Home> {
 
   RestaurantController restaurantController = Get.put(RestaurantController());
   MenuItemController menuItemController = Get.put(MenuItemController());
-
+  HomeController homeController = Get.put(HomeController());
   NotificationServices notificationServices = NotificationServices();
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    restaurantController.getRestaurantData();
-    menuItemController.getMenuItemStream();
-    notificationServices.requestNotificationPermission();
-    notificationServices.firebaseInit(BuildContext);
-    notificationServices.setupInteractMessage(BuildContext);
-    notificationServices.isTokenRefresh();
-    notificationServices.getDeviceToken().then((value){
-      print("Device token $value");
-    });
+    InitializeHomeScreen();
+    
   }
 
 
@@ -80,5 +74,18 @@ class _HomeState extends State<Home> {
           )
         ),
     );
+  }
+
+  Future InitializeHomeScreen() async{
+    await homeController.getBookings();
+    await restaurantController.getRestaurantData();
+    await menuItemController.getMenuItemStream();
+    notificationServices.requestNotificationPermission();
+    notificationServices.firebaseInit(BuildContext);
+    notificationServices.setupInteractMessage(BuildContext);
+    notificationServices.isTokenRefresh();
+    notificationServices.getDeviceToken().then((value){
+      print("Device token $value");
+    });
   }
 }

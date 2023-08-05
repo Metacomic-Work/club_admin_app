@@ -26,11 +26,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    
     homeController.checkTotalRestaurants();
     authController.getUserId();
     print("Current User Id${userController.UserModel.value.uid}");
-    
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                         toggleSize: 35.0,
                         value: toggle,
                         borderRadius: 30.0,
-                        activeColor: Color.fromARGB(255, 80, 233, 85),
+                        activeColor:const Color.fromARGB(255, 80, 233, 85),
                         padding: 5.0,
                         showOnOff: true,
                         onToggle: (val) {
@@ -79,33 +80,68 @@ class _HomePageState extends State<HomePage> {
                         onTap: (){
                           authController.logOut();
                         },
-                        child: Text("Logout",style: TextStyle(fontSize: 18),),
+                        child:const Text("Logout",style: TextStyle(fontSize: 18),),
                       ),
                     )
                   ],
                 ),
               ),
               const SizedBox(height: 20,),
-              
+              Container(
+                width: width,
+                height: height * 0.8,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('RestaurantOwner').doc(homeController.restaurantModel.value.uid).collection('RestaurantDetails').doc(homeController.restaurantModel.value.restoId).collection('bookings').snapshots(),
+                    builder: (context, snapshot){
+                      if(snapshot.hasError){
+                        return const Text("Something is Wrong");
+                      }
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if(snapshot.data!.docs.isEmpty){
+                        return const Center(child:Text("No Bookings",style: TextStyle(fontSize: 20,fontFamily: 'sen'),));
+                      }
+                      if(snapshot.data !=null){
+                        return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context,index){
+                            return Container(
+                              width: width,
+                              height: height * 0.2,
+                              margin:const EdgeInsets.symmetric(vertical: 10),
+                              decoration:const BoxDecoration(
+                                color: Colors.white
+                              ), 
+                              child: Padding(
+                                padding:  EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Guest Name: ${snapshot.data!.docs[index]['GuestName']}",style:const TextStyle(fontFamily:'sen',fontSize: 18),),
+                                    const SizedBox(height: 12,),
+                                    Text("Phone: ${snapshot.data!.docs[index]['Phone']}",style:const TextStyle(fontSize: 15,fontFamily: 'sen')),
+                                    const SizedBox(height: 12,),
+                                    Text("Date: ${snapshot.data!.docs[index]['Date']}",style:const TextStyle(fontSize: 15,fontFamily: 'sen')),
+                                    const SizedBox(height: 12,),
+                                    Text("Time: ${snapshot.data!.docs[index]['Time']}",style:const TextStyle(fontSize: 15,fontFamily: 'sen'))
+                                  ],
+                                )
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+              )
             ],
           ),
         ),
       ),
     );
-  }
-
-
-  void checkTotalRestaurants() async{
-    final ref = await FirebaseFirestore.instance
-      .collection('RestaurantOwner')
-      .doc(userController.UserModel.value.uid)
-      .collection('Restaurants').snapshots();
-
-
-    if(ref.length.toString() == '0'){
-      setState(() {
-        userController.UserModel.value.totalRestaurants = 0;
-      });
-    }
   }
 }
