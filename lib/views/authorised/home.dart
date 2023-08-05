@@ -1,5 +1,6 @@
 import 'package:club_admin/constants/homeConstants.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
+import 'package:club_admin/views/authorised/tabs/event_list_screen.dart';
 import 'package:club_admin/views/authorised/tabs/eventsPage.dart';
 import 'package:club_admin/views/authorised/tabs/homePage.dart';
 import 'package:club_admin/views/authorised/tabs/menuPage.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../../controllers/homeController.dart';
 import '../../controllers/menuItemsController.dart';
 import '../../controllers/restaurantController.dart';
 import '../../services/notificationServices.dart';
@@ -22,21 +24,14 @@ class _HomeState extends State<Home> {
 
   RestaurantController restaurantController = Get.put(RestaurantController());
   MenuItemController menuItemController = Get.put(MenuItemController());
-
+  HomeController homeController = Get.put(HomeController());
   NotificationServices notificationServices = NotificationServices();
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    restaurantController.getRestaurantData();
-    menuItemController.getMenuItemStream();
-    notificationServices.requestNotificationPermission();
-    notificationServices.firebaseInit(BuildContext);
-    notificationServices.setupInteractMessage(BuildContext);
-    notificationServices.isTokenRefresh();
-    notificationServices.getDeviceToken().then((value){
-      print("Device token $value");
-    });
+    InitializeHomeScreen();
+    
   }
 
 
@@ -50,7 +45,7 @@ class _HomeState extends State<Home> {
     const Center(
       child: MenuPage(),
     ),
-      EventHostingUserUI(),
+      EventsScreen(),
     const Center(
       child: RegisterRestaurant(),
     ),
@@ -60,6 +55,7 @@ class _HomeState extends State<Home> {
     dynamic height = MediaQuery.sizeOf(context).height;
     return SafeArea(
       child: Scaffold(
+       
           backgroundColor: Colors.white,
           body: Center(
             child: tabs[selectedindex],
@@ -80,5 +76,18 @@ class _HomeState extends State<Home> {
           )
         ),
     );
+  }
+
+  Future InitializeHomeScreen() async{
+    await homeController.getBookings();
+    await restaurantController.getRestaurantData();
+    await menuItemController.getMenuItemStream();
+    notificationServices.requestNotificationPermission();
+    notificationServices.firebaseInit(BuildContext);
+    notificationServices.setupInteractMessage(BuildContext);
+    notificationServices.isTokenRefresh();
+    notificationServices.getDeviceToken().then((value){
+      print("Device token $value");
+    });
   }
 }
