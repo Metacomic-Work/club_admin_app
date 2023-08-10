@@ -1,4 +1,5 @@
 import 'package:club_admin/constants/homeConstants.dart';
+import 'package:club_admin/controllers/mediaControllers.dart';
 import 'package:club_admin/views/authorised/registerResto.dart';
 import 'package:club_admin/views/authorised/tabs/event_list_screen.dart';
 import 'package:club_admin/views/authorised/tabs/eventsPage.dart';
@@ -8,6 +9,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../controllers/homeController.dart';
 import '../../controllers/menuItemsController.dart';
@@ -25,6 +27,7 @@ class _HomeState extends State<Home> {
   RestaurantController restaurantController = Get.put(RestaurantController());
   MenuItemController menuItemController = Get.put(MenuItemController());
   HomeController homeController = Get.put(HomeController());
+  MediaController mediaController = Get.put(MediaController());
   NotificationServices notificationServices = NotificationServices();
 @override
   void initState() {
@@ -34,7 +37,7 @@ class _HomeState extends State<Home> {
     
   }
 
-
+  bool isLoading = false;
   int selectedindex = 0;
   int currentIndex = 0;
   PageController controller = PageController(initialPage: 0);
@@ -55,10 +58,12 @@ class _HomeState extends State<Home> {
     dynamic height = MediaQuery.sizeOf(context).height;
     return SafeArea(
       child: Scaffold(
-       
           backgroundColor: Colors.white,
-          body: Center(
-            child: tabs[selectedindex],
+          body: Skeletonizer(
+            enabled: isLoading,
+            child: Center(
+              child: tabs[selectedindex],
+            ),
           ),
           bottomNavigationBar: FlashyTabBar(
             showElevation: true,
@@ -79,15 +84,22 @@ class _HomeState extends State<Home> {
   }
 
   Future InitializeHomeScreen() async{
+    setState(() {
+      isLoading = true;
+    });
     await homeController.getBookings();
     await restaurantController.getRestaurantData();
     await menuItemController.getMenuItemStream();
+    await mediaController.getRestaurantImagesStream();
     notificationServices.requestNotificationPermission();
     notificationServices.firebaseInit(BuildContext);
     notificationServices.setupInteractMessage(BuildContext);
     notificationServices.isTokenRefresh();
     notificationServices.getDeviceToken().then((value){
       print("Device token $value");
+    });
+    setState(() {
+      isLoading = false;
     });
   }
 }

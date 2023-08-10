@@ -102,8 +102,8 @@ class _HomePageState extends State<HomePage> {
                         return const Text("Something is Wrong");
                       }
                       if(snapshot.connectionState == ConnectionState.waiting){
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: Container(),
                         );
                       }
                       if(snapshot.data!.docs.isEmpty){

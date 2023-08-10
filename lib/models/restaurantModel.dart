@@ -29,6 +29,10 @@ class RestaurantModel{
     String? type;
     bool? isAvailable;
     bool? isOwnew;
+    String? banner;
+    String? bannerPath;
+    String? internalRestaurantImage;
+    String? internalRestaurantImagePath;
 
     RestaurantModel({
         this.uid,
@@ -36,8 +40,12 @@ class RestaurantModel{
         this.token,
         this.restaurantName,
         this.phone,
+        this.banner,
+        this.bannerPath,
         this.email,
         this.imagePath,
+        this.internalRestaurantImage,
+        this.internalRestaurantImagePath,
         this.restaurantImage,
         this.startTime,
         this.endTime,

@@ -32,6 +32,7 @@ dependencies:
   flutter_local_notifications: ^15.1.0+1
   app_settings: ^5.0.0
   uuid: ^3.0.7
+  skeletonizer: ^0.5.0
   
 
 dev_dependencies:
