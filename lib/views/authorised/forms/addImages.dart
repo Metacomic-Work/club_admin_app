@@ -17,8 +17,10 @@ class AddImages extends StatefulWidget {
 }
 
 class _AddImagesState extends State<AddImages> {
+  List<Map<String,dynamic>> media = [];
   MediaController mediaController = Get.put(MediaController());
   RestaurantController restaurantController = Get.put(RestaurantController());
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +51,38 @@ class _AddImagesState extends State<AddImages> {
                           height: h * 0.5,
                           child: Column(
                             children: [
-                              if(restaurantController.restaurantModel.value.internalRestaurantImage != null)
+                              SizedBox(height: 10,),
                               Container(
                                   alignment: Alignment.center,
                                   width: w * 0.9,
                                   height: h * 0.2,
                                   decoration: BoxDecoration(
                                     borderRadius:const BorderRadius.all(Radius.circular(10)),
-                                    image: DecorationImage(
-                                      image: FileImage(File(restaurantController.restaurantModel.value.internalRestaurantImage!)),
-                                      fit: BoxFit.cover,
-                                    )
+                                    color: Color.fromARGB(255, 236, 250, 255)
                                   ),
-                                )
-                              else
-                              InkWell(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: w * 0.9,
-                                  height: h * 0.2,
-                                  decoration:const BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                                    color: Colors.grey
-                                  ),
-                                  child:const Center(child: Icon(Icons.image)),
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: mediaController.media.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 100,
+                                          height: 100,
+                                          child: Image.file(mediaController.media[index],fit: BoxFit.cover),
+                                        ),
+                                      );
+                                    }
+                                  )
                                 ),
-                                onTap: (){
-                                  getImage(source: ImageSource.gallery);
-                                },
+                                TextButton(
+                                  onPressed: () async{
+                                    
+                                    getImage(source: ImageSource.gallery);
+                                  }, 
+                                child: Text("Pick Images",style:TextStyle(fontFamily: 'sen',fontSize: 20,))
                               ),
-                              SizedBox(height: 30,),
+                              SizedBox(height: h * 0.14,),
                               GestureDetector(
                                 child: Container(
                                   width: w * 0.95,
@@ -88,11 +92,19 @@ class _AddImagesState extends State<AddImages> {
                                     color: Colors.black,
                                   ),
                                   child: Center(
-                                    child: Text("Upload",style: TextStyle(fontFamily: 'sen',fontSize: 14,color: Colors.white),),
+                                    child: Row(
+                                      children: [
+                                        Text("Upload",style: TextStyle(fontFamily: 'sen',fontSize: 14,color: Colors.white),),
+                                        if(isLoading == false)
+                                        Container()
+                                        else 
+                                        CircularProgressIndicator(),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 onTap: () async {
-                                  await mediaController.uploadRestaurantInteriorImage(restaurantController.restaurantModel.value.internalRestaurantImage);
+                                  upload();
                                 },
                               )
                             ],
@@ -125,41 +137,34 @@ class _AddImagesState extends State<AddImages> {
                 ),
               ),
               const SizedBox(height: 10,),
-              StreamBuilder(
-                stream: mediaController.restaurantImagesStream,
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+              StreamBuilder<DocumentSnapshot>(
+                stream:mediaController.restaurantImagesStream,
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot){
                   if (snapshot.hasError) {
                     return Text("Something Wrong");
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CupertinoActivityIndicator(),
                     );
                   }
-                  if (snapshot.data!.docs.isEmpty) {
-                    return Text("No Images to Show");
+                  if (snapshot.data!.data() == null) {
+                    return const Text("No Images to Show");
                   }
+
+                 //final List<dynamic> data = snapshot.data?['Images'];
+
+                 //print(data);
+
                   if(snapshot.data != null){
-                    return GridView.builder(
+                    Map<String,dynamic> data = snapshot.data!.data()! as Map<String,dynamic>;
+                    return GridView(
                       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 150,
                         childAspectRatio: 1,
                         crossAxisSpacing: 2,
                         mainAxisSpacing: 2,
                       ),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context,index){
-                        return Container(
-                          width: w * 0.2,
-                          height: w * 0.2,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(snapshot.data!.docs[index]['RestaurantImage']),
-                              fit: BoxFit.cover,
-                            )
-                          ),
-                        );
-                      },
                     );
                   }
                   return Container();
@@ -175,12 +180,24 @@ class _AddImagesState extends State<AddImages> {
   }
 
   void getImage({required ImageSource source}) async {
-    final file = await ImagePicker().pickImage(source: source);
+    final images = await ImagePicker().pickMultiImage();
 
-    if (file?.path != null) {
+    for(var i=0;i < images.length;i++){
+      File file = File(images[i].path);
       setState(() {
-        restaurantController.restaurantModel.value.internalRestaurantImage = file!.path;
+        mediaController.media.add(file);
       });
     }
   }
+
+  Future<void> upload() async{
+    setState(() {
+      isLoading = true;
+    });
+    mediaController.uploadRestaurantInternalImages();
+    setState(() {
+      isLoading = false;
+    });
+  }
+  
 }

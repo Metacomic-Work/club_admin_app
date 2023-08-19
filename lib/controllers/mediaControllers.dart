@@ -12,12 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MediaController extends GetxController{
+  List<File> media = [];
+  List<String> imagePaths = [];
 
 
   Rx<ItemModel> itemModel = ItemModel().obs;
   Rx<RestaurantModel> restaurantModel = RestaurantModel().obs;
   UserController userController =Get.put(UserController()); 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? restaurantImagesStream;
+  Stream<DocumentSnapshot<Object?>>? restaurantImagesStream;
   
   
 
@@ -80,32 +82,31 @@ class MediaController extends GetxController{
 
   Future<dynamic> getRestaurantImagesStream() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    restaurantImagesStream = FirebaseFirestore.instance
-      .collection('RestaurantOwner')
-      .doc(prefs.getString('uid').toString())
-      .collection('RestaurantDetails')
-      .doc(prefs.getString('restoID'))
-      .collection('images').snapshots();
+    FirebaseFirestore.instance
+        .collection("Restaurants")
+        .doc(prefs.getString('restoID'))
+        .collection('images')
+        .doc('I${prefs.getString('restoID')}').snapshots();
   }
 
+  
+    List<dynamic> allData =[];
+    Future<QuerySnapshot?> getData() async {
+      
+        dynamic dataofItem = FirebaseFirestore.instance
+            .collection('')
+            .get()
+            .then((QuerySnapshot? querySnapshot) {
+          querySnapshot!.docs.forEach((doc) {
+            allData = doc["item_text_"];
+            print("allData = $allData");
+            //  print("getData = ${doc["item_text_"]}");
+          });
+        });
+        return dataofItem;
+      }
 
-  Future<void> uploadRestaurantInteriorImage(file) async{
-    String url = '';
-    String uniqueName = DateTime.now().microsecondsSinceEpoch.toString();
-    final ref = FirebaseStorage.instance
-        .ref().
-        child('Interior_images')
-        .child(uniqueName);
 
-    try{
-      await ref.putFile(File(file));
-      restaurantModel.value.bannerPath = await ref.getDownloadURL();
-    }catch(e){
-      print("Cannot Upload Image or Get link");
-      print(e);
-    }
-   
-  }
 
   void addRestaurantInteriorImage() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -144,6 +145,44 @@ class MediaController extends GetxController{
 
 
 
-}
 
+  Future<void> uploadRestaurantInternalImages() async {
+    String uniqueName = DateTime.now().microsecondsSinceEpoch.toString();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String restoId = prefs.getString('restoID').toString();
+    try {
+
+      //uploading images
+      List<String> imageUrls = [];
+      for (File image in media) {
+        final Reference storageReference =  FirebaseStorage.instance
+        .ref()
+        .child('Interior_images')
+        .child(uniqueName);
+        final UploadTask uploadTask = storageReference.putFile(image);
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+        if (taskSnapshot.state == TaskState.success) {
+          final downloadURL = await taskSnapshot.ref.getDownloadURL();
+          imageUrls.add(downloadURL);
+          print(downloadURL);
+        }
+      }
+      //uploading post to firestore
+
+      final ref = await FirebaseFirestore.instance
+        .collection("Restaurants")
+        .doc(restoId)
+        .collection("images")
+        .doc('I$restoId').update({
+          "Images": imageUrls
+        }
+      );
+
+      await prefs.setString("imagesID",'I$restoId');
+      
+    } catch (e) {
+      print(e);
+    }
+  }
+}
 

@@ -3,8 +3,8 @@ import 'package:club_admin/controllers/restaurantController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../constants/menuConstants.dart';
-import '../../controllers/menuItemsController.dart';
+import '../../../constants/menuConstants.dart';
+import '../../../controllers/menuItemsController.dart';
 
 
 String val = 'Veg';

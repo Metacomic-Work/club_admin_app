@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../controllers/mediaControllers.dart';
+import '../../../controllers/mediaControllers.dart';
 
 class AddBanner extends StatefulWidget {
   const AddBanner({super.key});
